@@ -155,7 +155,7 @@ git add .
 git commit -m "Update app"
 git push origin dev
 ```
-✅ Deploys to **Dev AWS EKS cluster** using Helm
+- Deploys to **Dev AWS EKS cluster** using Helm
 
 ### Deploy to UAT
 ```sh
@@ -164,7 +164,7 @@ git add .
 git commit -m "Update for UAT"
 git push origin uat
 ```
-✅ Deploys to **UAT AWS EKS cluster** using Helm
+- Deploys to **UAT AWS EKS cluster** using Helm
 
 ### Deploy to Prod
 ```sh
@@ -172,12 +172,12 @@ git checkout main
 git checkout -b release/v1.0
 git push origin release/v1.0
 ```
-✅ Deploys to **Prod AWS EKS cluster** using Helm
+- Deploys to **Prod AWS EKS cluster** using Helm
 
 ## Conclusion
-✅ **Uses Helm for Kubernetes deployments**  
-✅ **Automates AWS EKS deployments**  
-✅ **Multi-region, multi-environment CI/CD**  
+-**Uses Helm for Kubernetes deployments**  
+-**Automates AWS EKS deployments**  
+-**Multi-region, multi-environment CI/CD**  
 
 ---
 ## Thank you for chosing Etech Consulting Devops Master class for your Devops IT training
