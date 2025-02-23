@@ -180,5 +180,5 @@ git push origin release/v1.0
 ✅ **Multi-region, multi-environment CI/CD**  
 
 ---
-Would you like to add **Canary Deployments, Rollbacks, or Secrets Management?** 🚀
+## Thank you for chosing Etech Consulting Devops Master class for your Devops IT training
 
