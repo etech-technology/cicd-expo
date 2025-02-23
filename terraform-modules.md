@@ -72,6 +72,45 @@ output "vpc_id" {
 }
 ```
 
+### 5. **Using Multiple Providers in a Module**
+Terraform modules can use multiple providers to manage infrastructure across different cloud services or regions. This is done by explicitly defining provider configurations and passing them into the module.
+
+#### Example: Multi-Provider Usage in a Module
+```hcl
+provider "aws" {
+  alias  = "us-east-1"
+  region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "us-west-2"
+  region = "us-west-2"
+}
+
+module "multi_region_s3" {
+  source         = "./modules/s3"
+  providers = {
+    aws.us-east-1 = aws.us-east-1
+    aws.us-west-2 = aws.us-west-2
+  }
+}
+```
+
+#### `modules/s3/main.tf`
+```hcl
+resource "aws_s3_bucket" "primary" {
+  provider = aws.us-east-1
+  bucket   = "primary-bucket-us-east-1"
+}
+
+resource "aws_s3_bucket" "secondary" {
+  provider = aws.us-west-2
+  bucket   = "secondary-bucket-us-west-2"
+}
+```
+
+This allows resources to be managed in multiple regions or across different cloud providers.
+
 ## Best Practices for Terraform Modules
 ### 1. **Use Meaningful and Consistent Naming**
    - Choose descriptive names for resources and variables.
@@ -136,65 +175,8 @@ output "vpc_id" {
 }
 ```
 
-## Sample Project: Building a Custom AWS VPC and EC2 Instance Using Modules Versioned in GitHub
-### Step 1: Define the VPC Module (Hosted on GitHub)
-#### `vpc/main.tf`
-```hcl
-resource "aws_vpc" "main" {
-  cidr_block = var.vpc_cidr
-  tags = {
-    Name = var.vpc_name
-  }
-}
-```
-#### `vpc/outputs.tf`
-```hcl
-output "vpc_id" {
-  value = aws_vpc.main.id
-}
-```
-
-### Step 2: Define the EC2 Module (Hosted on GitHub)
-#### `ec2/main.tf`
-```hcl
-resource "aws_instance" "web" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  subnet_id     = var.subnet_id
-}
-```
-#### `ec2/outputs.tf`
-```hcl
-output "instance_id" {
-  value = aws_instance.web.id
-}
-```
-
-### Step 3: Use the Modules in a Terraform Project
-#### `main.tf`
-```hcl
-module "vpc" {
-  source   = "git::https://github.com/user/terraform-vpc-module.git?ref=v1.0"
-  vpc_cidr = "10.2.0.0/16"
-  vpc_name = "custom-vpc"
-}
-
-module "ec2" {
-  source         = "git::https://github.com/user/terraform-ec2-module.git?ref=v1.0"
-  ami_id         = "ami-12345678"
-  instance_type  = "t2.micro"
-  subnet_id      = module.vpc.vpc_id
-}
-
-output "vpc_id" {
-  value = module.vpc.vpc_id
-}
-
-output "ec2_instance_id" {
-  value = module.ec2.instance_id
-}
-```
-
 ## Conclusion
 Terraform modules provide an efficient way to manage and scale infrastructure by promoting reusability and maintainability. By following best practices and structuring modules effectively, teams can ensure consistency, flexibility, and reliability in their Terraform deployments.
+
+
 
